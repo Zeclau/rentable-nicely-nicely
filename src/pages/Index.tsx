@@ -132,7 +132,8 @@ const Index = () => {
       return;
     }
     setAgentErrors({});
-    const next: Agent[] = [{ ...parsed.data, addedAt: Date.now() }, ...agents].slice(0, 100);
+    const entry: Agent = { name: parsed.data.name, profession: parsed.data.profession, phone: parsed.data.phone, addedAt: Date.now() };
+    const next: Agent[] = [entry, ...agents].slice(0, 100);
     setAgents(next);
     try { localStorage.setItem(AGENTS_KEY, JSON.stringify(next)); } catch { /* noop */ }
     toast.success("¡Listo! Tus datos se agregaron a la lista de agentes.");
