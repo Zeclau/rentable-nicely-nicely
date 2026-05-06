@@ -506,8 +506,8 @@ const Index = () => {
                   <MessageCircle className="w-5 h-5" />
                 </span>
                 <div>
-                  <div className="font-semibold text-primary">Chatear con Yasser Santana</div>
-                  <div className="text-sm text-muted-foreground">Respuesta en minutos por WhatsApp</div>
+                  <div className="font-semibold text-primary">Yasser Santana Cruz</div>
+                  <div className="text-sm text-muted-foreground">Asistente administrativo · Respuesta por WhatsApp</div>
                 </div>
               </a>
               <a href="tel:+50576514498" className="flex items-center gap-4 p-4 rounded-xl bg-secondary/60 border border-border hover:border-accent transition-smooth group">
