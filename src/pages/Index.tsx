@@ -83,7 +83,17 @@ const Index = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [lightbox, setLightbox] = useState<number | null>(null);
+  const [agents, setAgents] = useState<Agent[]>([]);
+  const [agentErrors, setAgentErrors] = useState<Record<string, string>>({});
   const formRef = useRef<HTMLFormElement>(null);
+  const agentFormRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(AGENTS_KEY);
+      if (raw) setAgents(JSON.parse(raw));
+    } catch { /* noop */ }
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
