@@ -560,7 +560,7 @@ const Index = () => {
             <Building2 className="w-5 h-5 text-[hsl(var(--emerald-glow))]" />
             Módulo 1 · Praderas de Sandino V Etapa
           </div>
-          <div className="text-white/60">© {new Date().getFullYear()} Yasser Santana. Todos los derechos reservados.</div>
+          <div className="text-white/60">© {new Date().getFullYear()} Yasser Santana Cruz · Asistente administrativo · +505 7651 4498</div>
         </div>
       </footer>
 
