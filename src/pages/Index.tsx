@@ -660,8 +660,8 @@ const Index = () => {
         initial={{ scale: 0, rotate: -180 }}
         animate={{ scale: 1, rotate: 0 }}
         transition={{ delay: 1, type: "spring" }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 0.0001 }}
+        whileTap={{ scale: 0.0001 }}
         className="fixed bottom-6 right-6 z-40 w-16 h-16 rounded-full gradient-accent grid place-items-center text-accent-foreground shadow-glow"
         aria-label="Contactar por WhatsApp"
       >
