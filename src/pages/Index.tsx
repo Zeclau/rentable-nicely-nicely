@@ -2,8 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin, Rocket, Store, ShieldCheck, Zap, Phone, MessageCircle,
-  Maximize2, X, Calendar, Building2, CheckCircle2, ArrowRight, Menu
+  Maximize2, X, Calendar, Building2, CheckCircle2, ArrowRight, Menu, UserPlus, Briefcase
 } from "lucide-react";
+import { z } from "zod";
+
+type Agent = { name: string; profession: string; phone: string; addedAt: number };
+const AGENTS_KEY = "praderas_agents_v1";
+const agentSchema = z.object({
+  name: z.string().trim().min(2, "Nombre muy corto").max(80),
+  profession: z.string().trim().min(2, "Profesión requerida").max(80),
+  phone: z.string().trim().min(7, "Teléfono inválido").max(25).regex(/^[+\d\s().-]+$/, "Solo números y símbolos"),
+});
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
