@@ -2,8 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin, Rocket, Store, ShieldCheck, Zap, Phone, MessageCircle,
-  Maximize2, X, Calendar, Building2, CheckCircle2, ArrowRight, Menu
+  Maximize2, X, Calendar, Building2, CheckCircle2, ArrowRight, Menu, UserPlus, Briefcase
 } from "lucide-react";
+import { z } from "zod";
+
+type Agent = { name: string; profession: string; phone: string; addedAt: number };
+const AGENTS_KEY = "praderas_agents_v1";
+const agentSchema = z.object({
+  name: z.string().trim().min(2, "Nombre muy corto").max(80),
+  profession: z.string().trim().min(2, "Profesión requerida").max(80),
+  phone: z.string().trim().min(7, "Teléfono inválido").max(25).regex(/^[+\d\s().-]+$/, "Solo números y símbolos"),
+});
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -74,7 +83,17 @@ const Index = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [lightbox, setLightbox] = useState<number | null>(null);
+  const [agents, setAgents] = useState<Agent[]>([]);
+  const [agentErrors, setAgentErrors] = useState<Record<string, string>>({});
   const formRef = useRef<HTMLFormElement>(null);
+  const agentFormRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(AGENTS_KEY);
+      if (raw) setAgents(JSON.parse(raw));
+    } catch { /* noop */ }
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -94,6 +113,31 @@ const Index = () => {
     window.open(`https://wa.me/50576514498?text=${encodeURIComponent(text)}`, "_blank");
     toast.success("¡Mensaje enviado! Te redirigimos a WhatsApp.");
     formRef.current?.reset();
+  };
+
+  const handleAgentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const data = {
+      name: String(fd.get("agentName") ?? ""),
+      profession: String(fd.get("agentProfession") ?? ""),
+      phone: String(fd.get("agentPhone") ?? ""),
+    };
+    const parsed = agentSchema.safeParse(data);
+    if (!parsed.success) {
+      const errs: Record<string, string> = {};
+      parsed.error.issues.forEach(i => { errs[i.path[0] as string] = i.message; });
+      setAgentErrors(errs);
+      toast.error("Revisa los datos del formulario.");
+      return;
+    }
+    setAgentErrors({});
+    const entry: Agent = { name: parsed.data.name, profession: parsed.data.profession, phone: parsed.data.phone, addedAt: Date.now() };
+    const next: Agent[] = [entry, ...agents].slice(0, 100);
+    setAgents(next);
+    try { localStorage.setItem(AGENTS_KEY, JSON.stringify(next)); } catch { /* noop */ }
+    toast.success("¡Listo! Tus datos se agregaron a la lista de agentes.");
+    agentFormRef.current?.reset();
   };
 
   return (
@@ -500,26 +544,70 @@ const Index = () => {
               Déjanos tus datos y te contactamos hoy mismo para coordinar una visita o resolver todas tus dudas.
             </p>
 
-            <div className="space-y-4 mb-8">
-              <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-4 rounded-xl bg-secondary/60 border border-border hover:border-accent transition-smooth group">
-                <span className="w-12 h-12 rounded-xl gradient-accent grid place-items-center text-accent-foreground group-hover:scale-110 transition-smooth">
-                  <MessageCircle className="w-5 h-5" />
+            <div className="bg-card border border-border rounded-3xl p-6 md:p-7 shadow-card mb-6">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="w-11 h-11 rounded-xl gradient-accent grid place-items-center text-accent-foreground">
+                  <UserPlus className="w-5 h-5" />
                 </span>
                 <div>
-                  <div className="font-semibold text-primary">Yasser Santana Cruz</div>
-                  <div className="text-sm text-muted-foreground">Asistente administrativo · Respuesta por WhatsApp</div>
+                  <div className="font-bold text-primary">¿Eres agente de bienes raíces?</div>
+                  <div className="text-xs text-muted-foreground">Regístrate libremente y aparece en la lista pública.</div>
                 </div>
-              </a>
-              <a href="tel:+50576514498" className="flex items-center gap-4 p-4 rounded-xl bg-secondary/60 border border-border hover:border-accent transition-smooth group">
-                <span className="w-12 h-12 rounded-xl bg-primary grid place-items-center text-primary-foreground group-hover:scale-110 transition-smooth">
-                  <Phone className="w-5 h-5" />
-                </span>
-                <div>
-                  <div className="font-semibold text-primary">Llamada directa</div>
-                  <div className="text-sm text-muted-foreground">+505 7651 4498</div>
+              </div>
+
+              <form ref={agentFormRef} onSubmit={handleAgentSubmit} className="grid sm:grid-cols-3 gap-3">
+                <div className="sm:col-span-1">
+                  <Input name="agentName" maxLength={80} placeholder="Nombre" className="h-11 rounded-xl" />
+                  {agentErrors.name && <p className="text-xs text-destructive mt-1">{agentErrors.name}</p>}
                 </div>
-              </a>
+                <div className="sm:col-span-1">
+                  <Input name="agentProfession" maxLength={80} placeholder="Profesión" className="h-11 rounded-xl" />
+                  {agentErrors.profession && <p className="text-xs text-destructive mt-1">{agentErrors.profession}</p>}
+                </div>
+                <div className="sm:col-span-1">
+                  <Input name="agentPhone" maxLength={25} placeholder="Teléfono" className="h-11 rounded-xl" />
+                  {agentErrors.phone && <p className="text-xs text-destructive mt-1">{agentErrors.phone}</p>}
+                </div>
+                <Button type="submit" className="sm:col-span-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl h-11 hover:scale-[1.01] transition-smooth">
+                  Agregar mis datos <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </form>
+
+              {agents.length > 0 && (
+                <div className="mt-6">
+                  <div className="text-xs uppercase tracking-wider text-muted-foreground mb-3">
+                    Agentes registrados ({agents.length})
+                  </div>
+                  <ul className="space-y-2 max-h-72 overflow-y-auto pr-1">
+                    <AnimatePresence initial={false}>
+                      {agents.map((a) => (
+                        <motion.li
+                          key={a.addedAt}
+                          initial={{ opacity: 0, y: -8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          className="flex items-center justify-between gap-3 p-3 rounded-xl bg-secondary/60 border border-border"
+                        >
+                          <div className="min-w-0">
+                            <div className="font-semibold text-primary truncate">{a.name}</div>
+                            <div className="text-xs text-muted-foreground flex items-center gap-1.5 truncate">
+                              <Briefcase className="w-3 h-3 shrink-0" /> {a.profession}
+                            </div>
+                          </div>
+                          <a
+                            href={`tel:${a.phone.replace(/[^+\d]/g, "")}`}
+                            className="flex items-center gap-2 text-sm font-medium text-accent hover:underline shrink-0"
+                          >
+                            <Phone className="w-4 h-4" /> {a.phone}
+                          </a>
+                        </motion.li>
+                      ))}
+                    </AnimatePresence>
+                  </ul>
+                </div>
+              )}
             </div>
+
           </Reveal>
 
           <Reveal delay={0.15}>
