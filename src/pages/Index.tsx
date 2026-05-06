@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  MapPin, Rocket, Store, ShieldCheck, Zap, Phone,
+  MapPin, Rocket, Store, ShieldCheck, Zap, Phone,MessageCircle,
   Maximize2, X, Calendar, Building2, CheckCircle2, ArrowRight, Menu, UserPlus, Briefcase
 } from "lucide-react";
 import { z } from "zod";
