@@ -115,6 +115,30 @@ const Index = () => {
     formRef.current?.reset();
   };
 
+  const handleAgentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const data = {
+      name: String(fd.get("agentName") ?? ""),
+      profession: String(fd.get("agentProfession") ?? ""),
+      phone: String(fd.get("agentPhone") ?? ""),
+    };
+    const parsed = agentSchema.safeParse(data);
+    if (!parsed.success) {
+      const errs: Record<string, string> = {};
+      parsed.error.issues.forEach(i => { errs[i.path[0] as string] = i.message; });
+      setAgentErrors(errs);
+      toast.error("Revisa los datos del formulario.");
+      return;
+    }
+    setAgentErrors({});
+    const next: Agent[] = [{ ...parsed.data, addedAt: Date.now() }, ...agents].slice(0, 100);
+    setAgents(next);
+    try { localStorage.setItem(AGENTS_KEY, JSON.stringify(next)); } catch { /* noop */ }
+    toast.success("¡Listo! Tus datos se agregaron a la lista de agentes.");
+    agentFormRef.current?.reset();
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
