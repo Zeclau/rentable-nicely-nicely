@@ -20,7 +20,7 @@ import g7 from "@/assets/local-7.jpg";
 import g8 from "@/assets/local-8.jpg";
 import g9 from "@/assets/local-9.jpg";
 
-const WHATSAPP = "https://wa.me/50582154820?text=Hola%20Yasser%2C%20me%20interesa%20el%20m%C3%B3dulo%20comercial%20en%20Praderas%20de%20Sandino%20V%20Etapa.";
+const WHATSAPP = "https://wa.me/50576514498?text=Hola%20Yasser%2C%20me%20interesa%20el%20m%C3%B3dulo%20comercial%20en%20Praderas%20de%20Sandino%20V%20Etapa.";
 
 const gallery = [
   { src: g3, label: "Interior amplio · vista frontal" },
@@ -91,7 +91,7 @@ const Index = () => {
     const tipo = fd.get("tipo") as string;
     const msg = fd.get("mensaje") as string;
     const text = `Hola Yasser, soy ${nombre}. Tel: ${tel}. Negocio: ${tipo}. ${msg}`;
-    window.open(`https://wa.me/50582154820?text=${encodeURIComponent(text)}`, "_blank");
+    window.open(`https://wa.me/50576514498?text=${encodeURIComponent(text)}`, "_blank");
     toast.success("¡Mensaje enviado! Te redirigimos a WhatsApp.");
     formRef.current?.reset();
   };
@@ -506,17 +506,17 @@ const Index = () => {
                   <MessageCircle className="w-5 h-5" />
                 </span>
                 <div>
-                  <div className="font-semibold text-primary">Chatear con Yasser Santana</div>
-                  <div className="text-sm text-muted-foreground">Respuesta en minutos por WhatsApp</div>
+                  <div className="font-semibold text-primary">Yasser Santana Cruz</div>
+                  <div className="text-sm text-muted-foreground">Asistente administrativo · Respuesta por WhatsApp</div>
                 </div>
               </a>
-              <a href="tel:+50582154820" className="flex items-center gap-4 p-4 rounded-xl bg-secondary/60 border border-border hover:border-accent transition-smooth group">
+              <a href="tel:+50576514498" className="flex items-center gap-4 p-4 rounded-xl bg-secondary/60 border border-border hover:border-accent transition-smooth group">
                 <span className="w-12 h-12 rounded-xl bg-primary grid place-items-center text-primary-foreground group-hover:scale-110 transition-smooth">
                   <Phone className="w-5 h-5" />
                 </span>
                 <div>
                   <div className="font-semibold text-primary">Llamada directa</div>
-                  <div className="text-sm text-muted-foreground">+505 8215 4820</div>
+                  <div className="text-sm text-muted-foreground">+505 7651 4498</div>
                 </div>
               </a>
             </div>
@@ -560,7 +560,7 @@ const Index = () => {
             <Building2 className="w-5 h-5 text-[hsl(var(--emerald-glow))]" />
             Módulo 1 · Praderas de Sandino V Etapa
           </div>
-          <div className="text-white/60">© {new Date().getFullYear()} Yasser Santana. Todos los derechos reservados.</div>
+          <div className="text-white/60">© {new Date().getFullYear()} Yasser Santana Cruz · Asistente administrativo · +505 7651 4498</div>
         </div>
       </footer>
 
