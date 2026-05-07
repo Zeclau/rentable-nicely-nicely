@@ -163,6 +163,24 @@ const Index = () => {
     agentFormRef.current?.reset();
   };
 
+  const handleDeleteAgent = async (agent: Agent) => {
+    const code = window.prompt(`Ingresa la clave para eliminar a ${agent.name}:`);
+    if (code === null) return;
+    if (code !== "6310") {
+      toast.error("Clave incorrecta.");
+      return;
+    }
+    const prev = agents;
+    setAgents((p) => p.filter(a => a.id !== agent.id));
+    const { error } = await supabase.from("agents").delete().eq("id", agent.id);
+    if (error) {
+      setAgents(prev);
+      toast.error("No se pudo eliminar.");
+      return;
+    }
+    toast.success("Agente eliminado.");
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -631,6 +649,15 @@ const Index = () => {
                             >
                               <MessageCircle className="w-4 h-4" /> WhatsApp
                             </a>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteAgent(a)}
+                              className="w-8 h-8 grid place-items-center rounded-md border border-border bg-background text-muted-foreground hover:bg-destructive hover:text-destructive-foreground hover:border-destructive transition-smooth"
+                              aria-label={`Eliminar a ${a.name}`}
+                              title="Eliminar (requiere clave)"
+                            >
+                              <Check className="w-4 h-4" />
+                            </button>
                           </div>
                         </motion.li>
                       ))}
