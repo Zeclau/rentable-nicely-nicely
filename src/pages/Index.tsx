@@ -255,9 +255,6 @@ const Index = () => {
             <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground text-base px-8 py-6 rounded-xl shadow-glow hover:scale-105 transition-smooth">
               <a href="#contacto"><Calendar className="w-5 h-5 mr-2" /> Agendar Visita</a>
             </Button>
-            <Button asChild size="lg" variant="outline" className="text-base px-8 py-6 rounded-xl bg-white/10 border-white/30 text-white hover:bg-white hover:text-primary backdrop-blur transition-smooth">
-              <a href={WHATSAPP} target="_blank" rel="noopener noreferrer"><MessageCircle className="w-5 h-5 mr-2" /> WhatsApp Directo</a>
-            </Button>
           </motion.div>
 
           <motion.div
@@ -652,22 +649,6 @@ const Index = () => {
         </div>
       </footer>
 
-      {/* WhatsApp flotante */}
-      <motion.a
-        href={WHATSAPP}
-        target="_blank"
-        rel="noopener noreferrer"
-        initial={{ scale: 0, rotate: -180 }}
-        animate={{ scale: 1, rotate: 0 }}
-        transition={{ delay: 1, type: "spring" }}
-        whileHover={{ scale: 0.0001 }}
-        whileTap={{ scale: 0.0001 }}
-        className="fixed bottom-6 right-6 z-40 w-16 h-16 rounded-full gradient-accent grid place-items-center text-accent-foreground shadow-glow"
-        aria-label="Contactar por WhatsApp"
-      >
-        <MessageCircle className="w-7 h-7" />
-        <span className="absolute inset-0 rounded-full gradient-accent animate-ping opacity-40" />
-      </motion.a>
     </div>
   );
 };
