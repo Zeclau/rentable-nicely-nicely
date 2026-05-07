@@ -610,12 +610,24 @@ const Index = () => {
                               <Briefcase className="w-3 h-3 shrink-0" /> {a.profession}
                             </div>
                           </div>
-                          <a
-                            href={`tel:${a.phone.replace(/[^+\d]/g, "")}`}
-                            className="flex items-center gap-2 text-sm font-medium text-accent hover:underline shrink-0"
-                          >
-                            <Phone className="w-4 h-4" /> {a.phone}
-                          </a>
+                          <div className="flex items-center gap-2 shrink-0">
+                            <a
+                              href={`tel:${a.phone.replace(/[^+\d]/g, "")}`}
+                              className="flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+                              aria-label={`Llamar a ${a.name}`}
+                            >
+                              <Phone className="w-4 h-4" /> <span className="hidden sm:inline">{a.phone}</span>
+                            </a>
+                            <a
+                              href={`https://wa.me/${a.phone.replace(/[^\d]/g, "")}?text=${encodeURIComponent(`Hola ${a.name}, te contacto por el módulo comercial en Praderas de Sandino V Etapa.`)}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-xs font-semibold bg-accent text-accent-foreground px-3 py-2 rounded-lg hover:scale-105 transition-smooth"
+                              aria-label={`WhatsApp a ${a.name}`}
+                            >
+                              <MessageCircle className="w-4 h-4" /> WhatsApp
+                            </a>
+                          </div>
                         </motion.li>
                       ))}
                     </AnimatePresence>
