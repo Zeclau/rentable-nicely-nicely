@@ -6,13 +6,13 @@ import {
 } from "lucide-react";
 import { z } from "zod";
 
-type Agent = { name: string; profession: string; phone: string; addedAt: number };
-const AGENTS_KEY = "praderas_agents_v1";
+type Agent = { id: string; name: string; profession: string; phone: string; created_at: string };
 const agentSchema = z.object({
   name: z.string().trim().min(2, "Nombre muy corto").max(80),
   profession: z.string().trim().min(2, "Profesión requerida").max(80),
   phone: z.string().trim().min(7, "Teléfono inválido").max(25).regex(/^[+\d\s().-]+$/, "Solo números y símbolos"),
 });
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -89,10 +89,23 @@ const Index = () => {
   const agentFormRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(AGENTS_KEY);
-      if (raw) setAgents(JSON.parse(raw));
-    } catch { /* noop */ }
+    let mounted = true;
+    supabase
+      .from("agents")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(200)
+      .then(({ data }) => { if (mounted && data) setAgents(data as Agent[]); });
+
+    const channel = supabase
+      .channel("agents-realtime")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "agents" }, (payload) => {
+        const row = payload.new as Agent;
+        setAgents((prev) => prev.some(a => a.id === row.id) ? prev : [row, ...prev].slice(0, 200));
+      })
+      .subscribe();
+
+    return () => { mounted = false; supabase.removeChannel(channel); };
   }, []);
 
   useEffect(() => {
@@ -115,7 +128,7 @@ const Index = () => {
     formRef.current?.reset();
   };
 
-  const handleAgentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleAgentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     const data = {
@@ -132,10 +145,16 @@ const Index = () => {
       return;
     }
     setAgentErrors({});
-    const entry: Agent = { name: parsed.data.name, profession: parsed.data.profession, phone: parsed.data.phone, addedAt: Date.now() };
-    const next: Agent[] = [entry, ...agents].slice(0, 100);
-    setAgents(next);
-    try { localStorage.setItem(AGENTS_KEY, JSON.stringify(next)); } catch { /* noop */ }
+    const { data: inserted, error } = await supabase
+      .from("agents")
+      .insert(parsed.data)
+      .select()
+      .single();
+    if (error || !inserted) {
+      toast.error("No se pudo registrar. Inténtalo de nuevo.");
+      return;
+    }
+    setAgents((prev) => prev.some(a => a.id === inserted.id) ? prev : [inserted as Agent, ...prev]);
     toast.success("¡Listo! Tus datos se agregaron a la lista de agentes.");
     agentFormRef.current?.reset();
   };
