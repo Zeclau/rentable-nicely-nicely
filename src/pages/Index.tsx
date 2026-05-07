@@ -147,7 +147,7 @@ const Index = () => {
     setAgentErrors({});
     const { data: inserted, error } = await supabase
       .from("agents")
-      .insert(parsed.data)
+      .insert({ name: parsed.data.name, profession: parsed.data.profession, phone: parsed.data.phone })
       .select()
       .single();
     if (error || !inserted) {
@@ -598,7 +598,7 @@ const Index = () => {
                     <AnimatePresence initial={false}>
                       {agents.map((a) => (
                         <motion.li
-                          key={a.addedAt}
+                          key={a.id}
                           initial={{ opacity: 0, y: -8 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, x: -20 }}
