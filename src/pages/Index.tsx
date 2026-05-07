@@ -103,6 +103,10 @@ const Index = () => {
         const row = payload.new as Agent;
         setAgents((prev) => prev.some(a => a.id === row.id) ? prev : [row, ...prev].slice(0, 200));
       })
+      .on("postgres_changes", { event: "DELETE", schema: "public", table: "agents" }, (payload) => {
+        const oldRow = payload.old as { id: string };
+        setAgents((prev) => prev.filter(a => a.id !== oldRow.id));
+      })
       .subscribe();
 
     return () => { mounted = false; supabase.removeChannel(channel); };
