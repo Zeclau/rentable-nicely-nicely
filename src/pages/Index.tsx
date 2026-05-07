@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin, Rocket, Store, ShieldCheck, Zap, Phone, MessageCircle,
-  Maximize2, X, Calendar, Building2, CheckCircle2, ArrowRight, Menu, UserPlus, Briefcase
+  Maximize2, X, Calendar, Building2, CheckCircle2, ArrowRight, Menu, UserPlus, Briefcase, Check
 } from "lucide-react";
 import { z } from "zod";
 
@@ -103,6 +103,10 @@ const Index = () => {
         const row = payload.new as Agent;
         setAgents((prev) => prev.some(a => a.id === row.id) ? prev : [row, ...prev].slice(0, 200));
       })
+      .on("postgres_changes", { event: "DELETE", schema: "public", table: "agents" }, (payload) => {
+        const oldRow = payload.old as { id: string };
+        setAgents((prev) => prev.filter(a => a.id !== oldRow.id));
+      })
       .subscribe();
 
     return () => { mounted = false; supabase.removeChannel(channel); };
@@ -157,6 +161,24 @@ const Index = () => {
     setAgents((prev) => prev.some(a => a.id === inserted.id) ? prev : [inserted as Agent, ...prev]);
     toast.success("¡Listo! Tus datos se agregaron a la lista de agentes.");
     agentFormRef.current?.reset();
+  };
+
+  const handleDeleteAgent = async (agent: Agent) => {
+    const code = window.prompt(`Ingresa la clave para eliminar a ${agent.name}:`);
+    if (code === null) return;
+    if (code !== "6310") {
+      toast.error("Clave incorrecta.");
+      return;
+    }
+    const prev = agents;
+    setAgents((p) => p.filter(a => a.id !== agent.id));
+    const { error } = await supabase.from("agents").delete().eq("id", agent.id);
+    if (error) {
+      setAgents(prev);
+      toast.error("No se pudo eliminar.");
+      return;
+    }
+    toast.success("Agente eliminado.");
   };
 
   return (
@@ -627,6 +649,15 @@ const Index = () => {
                             >
                               <MessageCircle className="w-4 h-4" /> WhatsApp
                             </a>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteAgent(a)}
+                              className="w-8 h-8 grid place-items-center rounded-md border border-border bg-background text-muted-foreground hover:bg-destructive hover:text-destructive-foreground hover:border-destructive transition-smooth"
+                              aria-label={`Eliminar a ${a.name}`}
+                              title="Eliminar (requiere clave)"
+                            >
+                              <Check className="w-4 h-4" />
+                            </button>
                           </div>
                         </motion.li>
                       ))}
