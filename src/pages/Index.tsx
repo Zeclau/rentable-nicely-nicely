@@ -48,7 +48,6 @@ const navLinks = [
   { href: "#detalles", label: "Detalles" },
   { href: "#inversion", label: "Inversión" },
   { href: "#galeria", label: "Galería" },
-  { href: "#ubicacion", label: "Ubicación" },
   { href: "#contacto", label: "Contacto" },
 ];
 
@@ -187,36 +186,34 @@ const Index = () => {
       {/* Header */}
       <header
         className={`fixed top-0 inset-x-0 z-40 transition-smooth ${
-          scrolled ? "bg-background/90 backdrop-blur-lg shadow-soft" : "bg-transparent"
+          scrolled ? "bg-background/90 backdrop-blur-lg shadow-soft" : "bg-background/60 backdrop-blur-md shadow-soft"
         }`}
       >
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="#inicio" className="flex items-center gap-2 font-bold">
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
+          <a href="#inicio" className="flex items-center gap-2 font-bold shrink-0">
             <span className={`w-9 h-9 rounded-lg gradient-accent grid place-items-center text-accent-foreground`}>
               <Building2 className="w-5 h-5" />
             </span>
-            <span className={scrolled ? "text-primary" : "text-white drop-shadow"}>Módulo 3 · La Esquina</span>
+            <span className={scrolled ? "text-primary" : "text-primary"}>Módulo 3 · La Esquina</span>
           </a>
-          <nav className="hidden md:flex items-center gap-7">
+          <nav className="hidden md:flex items-center justify-center flex-1 gap-4 lg:gap-7 overflow-hidden">
             {navLinks.map(l => (
               <a
                 key={l.href}
                 href={l.href}
-                className={`text-sm font-medium transition-smooth hover:text-accent ${
-                  scrolled ? "text-foreground/80" : "text-white/90"
-                }`}
+                className="text-sm font-medium transition-smooth hover:text-accent text-foreground/80 whitespace-nowrap"
               >
                 {l.label}
               </a>
             ))}
           </nav>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 shrink-0">
             <Button asChild size="sm" className="hidden md:inline-flex bg-accent hover:bg-accent/90 text-accent-foreground hover:scale-105 transition-smooth">
               <a href="#contacto">Agendar Visita</a>
             </Button>
             <button
               onClick={() => setMenuOpen(v => !v)}
-              className={`md:hidden p-2 rounded-lg ${scrolled ? "text-foreground" : "text-white"}`}
+              className="md:hidden p-2 rounded-lg text-foreground"
               aria-label="Menú"
             >
               <Menu className="w-6 h-6" />
@@ -247,7 +244,7 @@ const Index = () => {
       </header>
 
       {/* Hero */}
-      <section id="inicio" className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
+      <section id="inicio" className="relative min-h-[100svh] flex items-center justify-center overflow-hidden pt-24 md:pt-28">
         <img
           src={hero}
           alt="Módulo comercial de esquina en Praderas de Sandino V Etapa, iluminado de noche"
@@ -273,9 +270,9 @@ const Index = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] mb-6"
+            className="mx-auto max-w-[1200px] text-[clamp(3rem,7vw,8.5rem)] font-extrabold leading-[0.9] tracking-[-0.06em] mb-6"
           >
-            Tu Próximo Negocio en la <span className="text-[hsl(var(--emerald-glow))]">Zona de Mayor Crecimiento</span>
+            Tu Próximo Negocio en la <span className="block text-[hsl(var(--emerald-glow))]">Zona de Mayor Crecimiento</span>
           </motion.h1>
 
           <motion.p
