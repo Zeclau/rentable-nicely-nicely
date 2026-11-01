@@ -268,7 +268,7 @@ const Index = () => {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/20 mb-6 text-sm"
           >
             <span className="w-2 h-2 rounded-full bg-[hsl(var(--emerald))] animate-pulse" />
-            Disponible .
+             .
           </motion.div>
 
           <motion.h1
@@ -336,7 +336,7 @@ const Index = () => {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
             { icon: Rocket, title: "Ubicación Estratégica", desc: "Alto tráfico de vehículos y peatones todo el día, con visibilidad desde la esquina. Contiguo a un Super Express con flujo constante de clientes." },
-            { icon: Store, title: "Entorno Sinérgico", desc: "Flanqueado por negocios ancla: local de comida rápida y carnicería que atraen tu público objetivo." },
+            { icon: Store, title: "Entorno Sinérgico", desc: "Flanqueado por negocios ancla: local de comida rápida y batidos y waffles que atraen tu público objetivo." },
             { icon: ShieldCheck, title: "Máxima Seguridad", desc: "Residencial seguro y de confianza. Iluminación nocturna y comunidad activa que protege tu inversión." },
             { icon: Zap, title: "Independencia Total", desc: "Medidores privados de agua y energía. Tú controlas tus consumos sin sorpresas en tus facturas." },
           ].map((c, i) => (
