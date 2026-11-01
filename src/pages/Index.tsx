@@ -268,7 +268,7 @@ const Index = () => {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/20 mb-6 text-sm"
           >
             <span className="w-2 h-2 rounded-full bg-[hsl(var(--emerald))] animate-pulse" />
-            Disponible el 9 de diciembre · Módulo 3, en la esquina
+            Disponible .
           </motion.div>
 
           <motion.h1
@@ -482,7 +482,7 @@ const Index = () => {
             <span className="text-accent font-semibold uppercase text-sm tracking-widest">Galería</span>
             <h2 className="text-3xl md:text-5xl font-bold mt-3 text-primary">Conoce el espacio por dentro</h2>
             <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
-              Actualmente acondicionado como barbería, ideal para adaptarse a tu visión: cafetería, oficina, boutique, consultorio o tienda.
+              Actualmente acondicionado como carnicería, ideal para adaptarse a tu visión: cafetería, oficina, boutique, consultorio o tienda.
             </p>
           </div>
         </Reveal>
