@@ -371,8 +371,8 @@ const Index = () => {
                 ["Módulo", "Número TRES (3)"],
                 ["Posición", "Local de esquina"],
                 ["Área aproximada", "21.50 m²"],
-                ["Ancho", "4.80 m"],
-                ["Fondo", "4.48 m"],
+                ["Ancho", "4.94 m"],
+                ["Fondo", "4.50 m"],
                 ["Altura interior", "2.92 m"],
                 ["Disponibilidad", "9 de diciembre"],
               ].map(([k, v]) => (
