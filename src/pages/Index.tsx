@@ -268,7 +268,7 @@ const Index = () => {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/20 mb-6 text-sm"
           >
             <span className="w-2 h-2 rounded-full bg-[hsl(var(--emerald))] animate-pulse" />
-             .
+             
           </motion.div>
 
           <motion.h1
