@@ -504,7 +504,7 @@ const Index = () => {
                   alt={g.label}
                   loading="lazy"
                   className={`w-full object-cover transition-smooth group-hover:scale-110 ${
-                    i === 0 ? "h-64 md:h-[520px]" : i === gallery.length - 1 ? "h-40 md:h-72" : "h-40 md:h-64"
+                    i === 0 ? "h-40 md:h-[520px]" : i === gallery.length - 1 ? "h-40 md:h-72" : "h-40 md:h-64"
                   }`}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-smooth" />
