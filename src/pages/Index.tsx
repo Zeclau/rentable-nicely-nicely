@@ -67,9 +67,10 @@ function Section({ id, className = "", children }: { id?: string; className?: st
   );
 }
 
-function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
   return (
     <motion.div
+      className={className}
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, margin: "-80px" }}
@@ -256,7 +257,7 @@ const Index = () => {
           width={1900}
           height={1180}
         />
-        <div className="absolute inset-0 gradient-hero" />
+        <div className="absolute inset-0 bg-primary/55" />
         <div className="absolute inset-0 bg-gradient-to-t from-[hsl(var(--navy-deep))] via-transparent to-transparent" />
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center text-white">
@@ -488,13 +489,15 @@ const Index = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
           {gallery.map((g, i) => (
-            <Reveal key={i} delay={(i % 3) * 0.05}>
+            <Reveal
+              key={i}
+              delay={(i % 3) * 0.05}
+              className={i === 0 ? "md:col-span-2 md:row-span-2" : i === gallery.length - 1 ? "md:col-span-3" : ""}
+            >
               <motion.button
                 whileHover={{ scale: 1.03 }}
                 onClick={() => setLightbox(i)}
-                className={`relative w-full overflow-hidden rounded-2xl group block ${
-                  i === 0 ? "md:col-span-2 md:row-span-2" : i === gallery.length - 1 ? "md:col-span-3" : ""
-                }`}
+                className="relative w-full overflow-hidden rounded-2xl group block h-full"
               >
                 <img
                   src={g.src}
