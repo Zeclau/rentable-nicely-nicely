@@ -266,7 +266,7 @@ const Index = () => {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/20 mb-6 text-sm"
           >
             <span className="w-2 h-2 rounded-full bg-[hsl(var(--emerald))] animate-pulse" />
-            Disponible de inmediato · Módulo 3, en la esquina
+            Disponible el 9 de diciembre · Módulo 3, en la esquina
           </motion.div>
 
           <motion.h1
@@ -307,7 +307,7 @@ const Index = () => {
           >
             {[
               { v: "21.5", l: "m² útiles" },
-              { v: "U$250", l: "Mensual" },
+              { v: "U$270", l: "Mensual" },
               { v: "100%", l: "Independiente" },
             ].map((s, i) => (
               <div key={i} className="text-center">
@@ -372,7 +372,7 @@ const Index = () => {
                 ["Ancho", "4.80 m"],
                 ["Fondo", "4.48 m"],
                 ["Altura interior", "2.92 m"],
-                ["Disponibilidad", "Inmediata"],
+                ["Disponibilidad", "9 de diciembre"],
               ].map(([k, v]) => (
                 <div key={k} className="flex items-center justify-between border-b border-border pb-3">
                   <span className="text-muted-foreground">{k}</span>
@@ -416,7 +416,7 @@ const Index = () => {
 
       {/* Inversión */}
       <Section id="inversion" className="bg-primary text-primary-foreground relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 20% 20%, hsl(var(--emerald)) 0%, transparent 50%), radial-gradient(circle at 80% 80%, hsl(var(--emerald)) 0%, transparent 50%)" }} />
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 20% 20%, hsl(var(--emerald)) 0%, transparent 50%), radial-gradient(circle at 80% 80%, hsl(var(--gold)) 0%, transparent 50%)" }} />
         <div className="relative">
           <Reveal>
             <div className="text-center mb-14">
@@ -430,10 +430,10 @@ const Index = () => {
               <div className="bg-white/5 backdrop-blur border border-white/10 rounded-3xl p-8 hover:bg-white/10 transition-smooth h-full">
                 <p className="text-white/60 text-sm uppercase tracking-wider mb-2">Canon mensual</p>
                 <div className="flex items-baseline gap-3 mb-3">
-                  <span className="text-5xl md:text-6xl font-extrabold text-[hsl(var(--emerald-glow))]">U$ 250</span>
+                  <span className="text-5xl md:text-6xl font-extrabold text-[hsl(var(--emerald-glow))]">U$ 270</span>
                   <span className="text-white/70">/ mes</span>
                 </div>
-                <p className="text-white/70">Equivalente a <span className="font-semibold text-white">C$ 9,250.00</span> mensuales.</p>
+                <p className="text-white/70">Equivalente a <span className="font-semibold text-white">C$ 10,000.00</span> mensuales.</p>
                 <div className="mt-6 pt-6 border-t border-white/10">
                   <p className="text-sm text-white/60 mb-2">Requisitos al firmar</p>
                   <p className="font-semibold">1 mes de anticipo + 1 mes de depósito en garantía</p>
@@ -645,7 +645,7 @@ const Index = () => {
                               <Phone className="w-4 h-4" /> <span className="hidden sm:inline">{a.phone}</span>
                             </a>
                             <a
-                              href={`https://wa.me/${a.phone.replace(/[^\d]/g, "")}?text=${encodeURIComponent(`Hola ${a.name}, te contacto por el módulo comercial en Praderas de Sandino V Etapa.`)}`}
+                              href={`https://wa.me/${a.phone.replace(/[^\d]/g, "")}?text=${encodeURIComponent(`Hola ${a.name}, te contacto por el módulo comercial en Praderas de Sandino V Etapa. Me interesa más información.`)}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="inline-flex items-center gap-1.5 text-xs font-semibold bg-accent text-accent-foreground px-3 py-2 rounded-lg hover:scale-105 transition-smooth"
@@ -656,7 +656,7 @@ const Index = () => {
                             <button
                               type="button"
                               onClick={() => handleDeleteAgent(a)}
-                              className="w-8 h-8 grid place-items-center rounded-md border border-border bg-background text-muted-foreground hover:bg-destructive hover:text-destructive-foreground hover:border-destructive transition-smooth"
+                              className="w-8 h-8 grid place-items-center rounded-md border border-border bg-background text-muted-foreground hover:bg-destructive hover:text-destructive-foreground transition-smooth"
                               aria-label={`Eliminar a ${a.name}`}
                               title="Eliminar (requiere clave)"
                             >
