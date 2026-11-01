@@ -28,7 +28,7 @@ import g6 from "@/assets/local-6.jpg";
 import g7 from "@/assets/local-7.jpg";
 import g8 from "@/assets/local-8.jpg";
 import g9 from "@/assets/local-9.jpg";
-import g10 from "@/assets/local-10.svg";
+import g10 from "@/assets/local-10.png";
 
 const WHATSAPP = "https://wa.me/50576514498?text=Hola%20Yasser%2C%20me%20interesa%20el%20m%C3%B3dulo%20comercial%20en%20Praderas%20de%20Sandino%20V%20Etapa.";
 
