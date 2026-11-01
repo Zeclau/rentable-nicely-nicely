@@ -490,7 +490,7 @@ const Index = () => {
             <Reveal
               key={i}
               delay={(i % 3) * 0.05}
-              className={i === 0 ? "md:col-span-2 md:row-span-2" : ""}
+              className={i === 0 ? "md:col-span-2 md:row-span-2" : i === gallery.length - 1 ? "col-span-2 md:col-span-1" : ""}
             >
               <motion.button
                 whileHover={{ scale: 1.03 }}
