@@ -711,7 +711,7 @@ const Index = () => {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
           <div className="flex items-center gap-2 font-semibold">
             <Building2 className="w-5 h-5 text-[hsl(var(--emerald-glow))]" />
-            Módulo 3 · La Esquina · Praderas de Sandino V Etapa
+            Módulo 3
           </div>
           <div className="text-white/60">© {new Date().getFullYear()} Yasser Santana Cruz · Asistente administrativo · +505 7651 4498</div>
         </div>
