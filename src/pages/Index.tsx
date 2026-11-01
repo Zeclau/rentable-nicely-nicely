@@ -18,7 +18,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 
-import hero from "@/assets/hero-local.jpg";
+import hero from "@/assets/hero-module3-night.jpg";
+import heroOld from "@/assets/hero-local.jpg";
 import g1 from "@/assets/local-1.jpg";
 import g2 from "@/assets/local-2.jpg";
 import g3 from "@/assets/local-3.jpg";
@@ -33,7 +34,7 @@ const WHATSAPP = "https://wa.me/50576514498?text=Hola%20Yasser%2C%20me%20interes
 
 const gallery = [
   { src: g3, label: "Interior amplio · vista frontal" },
-  { src: g1, label: "Fachada exterior nocturna" },
+  { src: heroOld, label: "Fachada al atardecer · ambiente comercial" },
   { src: g7, label: "Interior con acceso a baño" },
   { src: g6, label: "Vista lateral del módulo" },
   { src: g9, label: "Baño completo con lavandería" },
@@ -41,6 +42,7 @@ const gallery = [
   { src: g5, label: "Ventilación natural" },
   { src: g2, label: "Panel eléctrico privado" },
   { src: g8, label: "Plano arquitectónico" },
+  { src: g1, label: "Fachada exterior nocturna" },
 ];
 
 const navLinks = [
@@ -194,7 +196,7 @@ const Index = () => {
             <span className={`w-9 h-9 rounded-lg gradient-accent grid place-items-center text-accent-foreground`}>
               <Building2 className="w-5 h-5" />
             </span>
-            <span className={scrolled ? "text-primary" : "text-white drop-shadow"}>Módulo 1 · Praderas</span>
+            <span className={scrolled ? "text-primary" : "text-white drop-shadow"}>Módulo 3 · La Esquina</span>
           </a>
           <nav className="hidden md:flex items-center gap-7">
             {navLinks.map(l => (
@@ -249,10 +251,10 @@ const Index = () => {
       <section id="inicio" className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
         <img
           src={hero}
-          alt="Módulo comercial moderno disponible para alquiler en Managua"
+          alt="Módulo comercial de esquina en Praderas de Sandino V Etapa, iluminado de noche"
           className="absolute inset-0 w-full h-full object-cover"
-          width={1920}
-          height={1280}
+          width={1900}
+          height={1180}
         />
         <div className="absolute inset-0 gradient-hero" />
         <div className="absolute inset-0 bg-gradient-to-t from-[hsl(var(--navy-deep))] via-transparent to-transparent" />
@@ -265,7 +267,7 @@ const Index = () => {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/20 mb-6 text-sm"
           >
             <span className="w-2 h-2 rounded-full bg-[hsl(var(--emerald))] animate-pulse" />
-            Disponible de inmediato · Praderas de Sandino V Etapa
+            Disponible de inmediato · Módulo 3, en la esquina
           </motion.div>
 
           <motion.h1
@@ -283,7 +285,7 @@ const Index = () => {
             transition={{ duration: 0.7, delay: 0.25 }}
             className="text-lg md:text-xl text-white/85 max-w-2xl mx-auto mb-10"
           >
-            Módulo comercial estratégico con alto tráfico garantizado. Ubicado en
+            Módulo comercial de esquina con alto tráfico garantizado. Ubicado en
             Praderas de Sandino V Etapa, contiguo a un Super Express y rodeado de comercios consolidados.
           </motion.p>
 
@@ -332,7 +334,7 @@ const Index = () => {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { icon: Rocket, title: "Ubicación Estratégica", desc: "Alto tráfico de vehículos y peatones todo el día. Contiguo a un Super Express con flujo constante de clientes." },
+            { icon: Rocket, title: "Ubicación Estratégica", desc: "Alto tráfico de vehículos y peatones todo el día, con visibilidad desde la esquina. Contiguo a un Super Express con flujo constante de clientes." },
             { icon: Store, title: "Entorno Sinérgico", desc: "Flanqueado por negocios ancla: local de comida rápida y carnicería que atraen tu público objetivo." },
             { icon: ShieldCheck, title: "Máxima Seguridad", desc: "Residencial seguro y de confianza. Iluminación nocturna y comunidad activa que protege tu inversión." },
             { icon: Zap, title: "Independencia Total", desc: "Medidores privados de agua y energía. Tú controlas tus consumos sin sorpresas en tus facturas." },
@@ -365,7 +367,8 @@ const Index = () => {
 
             <div className="space-y-4">
               {[
-                ["Módulo", "Número UNO (1)"],
+                ["Módulo", "Número TRES (3)"],
+                ["Posición", "Local de esquina"],
                 ["Área aproximada", "21.50 m²"],
                 ["Ancho", "4.80 m"],
                 ["Fondo", "4.48 m"],
@@ -490,7 +493,7 @@ const Index = () => {
                 whileHover={{ scale: 1.03 }}
                 onClick={() => setLightbox(i)}
                 className={`relative w-full overflow-hidden rounded-2xl group block ${
-                  i === 0 ? "md:col-span-2 md:row-span-2" : ""
+                  i === 0 ? "md:col-span-2 md:row-span-2" : i === gallery.length - 1 ? "md:col-span-3" : ""
                 }`}
               >
                 <img
@@ -498,7 +501,7 @@ const Index = () => {
                   alt={g.label}
                   loading="lazy"
                   className={`w-full object-cover transition-smooth group-hover:scale-110 ${
-                    i === 0 ? "h-64 md:h-[520px]" : "h-40 md:h-64"
+                    i === 0 ? "h-64 md:h-[520px]" : i === gallery.length - 1 ? "h-40 md:h-72" : "h-40 md:h-64"
                   }`}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-smooth" />
@@ -705,7 +708,7 @@ const Index = () => {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
           <div className="flex items-center gap-2 font-semibold">
             <Building2 className="w-5 h-5 text-[hsl(var(--emerald-glow))]" />
-            Módulo 1 · Praderas de Sandino V Etapa
+            Módulo 3 · La Esquina · Praderas de Sandino V Etapa
           </div>
           <div className="text-white/60">© {new Date().getFullYear()} Yasser Santana Cruz · Asistente administrativo · +505 7651 4498</div>
         </div>
