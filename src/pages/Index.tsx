@@ -257,7 +257,7 @@ const Index = () => {
           width={1900}
           height={1180}
         />
-        <div className="absolute inset-0 bg-primary/55" />
+        <div className="absolute inset-0" style={{ backgroundColor: "hsl(var(--navy-deep) / 0.55)" }} />
         <div className="absolute inset-0 bg-gradient-to-t from-[hsl(var(--navy-deep))] via-transparent to-transparent" />
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center text-white">
