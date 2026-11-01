@@ -19,7 +19,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 
 import hero from "@/assets/hero-module3-night.jpg";
-import heroOld from "@/assets/hero-local.jpg";
 import g1 from "@/assets/local-1.jpg";
 import g2 from "@/assets/local-2.jpg";
 import g3 from "@/assets/local-3.jpg";
@@ -34,7 +33,6 @@ const WHATSAPP = "https://wa.me/50576514498?text=Hola%20Yasser%2C%20me%20interes
 
 const gallery = [
   { src: g3, label: "Interior amplio · vista frontal" },
-  { src: heroOld, label: "Fachada al atardecer · ambiente comercial" },
   { src: g7, label: "Interior con acceso a baño" },
   { src: g6, label: "Vista lateral del módulo" },
   { src: g9, label: "Baño completo con lavandería" },
@@ -400,7 +398,7 @@ const Index = () => {
           <Reveal delay={0.2}>
             <div className="relative">
               <motion.div whileHover={{ scale: 1.02 }} className="rounded-3xl overflow-hidden shadow-card">
-                <img src={g3} alt="Interior del módulo comercial" className="w-full h-[480px] object-cover" loading="lazy" />
+                <img src={hero} alt="Módulo comercial de esquina en Praderas de Sandino V Etapa, iluminado de noche" className="w-full h-[480px] object-cover" loading="lazy" />
               </motion.div>
               <div className="absolute -bottom-6 -left-6 bg-card rounded-2xl p-5 shadow-card border border-border hidden md:block">
                 <div className="flex items-center gap-3">
@@ -492,7 +490,7 @@ const Index = () => {
             <Reveal
               key={i}
               delay={(i % 3) * 0.05}
-              className={i === 0 ? "md:col-span-2 md:row-span-2" : i === gallery.length - 1 ? "md:col-span-3" : ""}
+              className={i === 0 ? "md:col-span-2 md:row-span-2" : i === gallery.length - 1 ? "col-span-2 md:col-span-1" : ""}
             >
               <motion.button
                 whileHover={{ scale: 1.03 }}
@@ -504,7 +502,7 @@ const Index = () => {
                   alt={g.label}
                   loading="lazy"
                   className={`w-full object-cover transition-smooth group-hover:scale-110 ${
-                    i === 0 ? "h-40 md:h-[520px]" : i === gallery.length - 1 ? "h-40 md:h-72" : "h-40 md:h-64"
+                    i === 0 ? "h-40 md:h-[520px]" : "h-40 md:h-64"
                   }`}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-smooth" />
