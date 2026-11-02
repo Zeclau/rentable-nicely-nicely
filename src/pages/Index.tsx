@@ -21,11 +21,8 @@ import { toast } from "sonner";
 import hero from "@/assets/hero-module3-night.jpg";
 import g1 from "@/assets/local-1.jpg";
 import g2 from "@/assets/local-2.jpg";
-import g3 from "@/assets/local-3.jpg";
 import g4 from "@/assets/local-4.jpg";
 import g5 from "@/assets/local-5.jpg";
-import g6 from "@/assets/local-6.jpg";
-import g7 from "@/assets/local-7.jpg";
 import g10 from "@/assets/local-10.png";
 import g9 from "@/assets/local-9.jpg";
 import g11 from "@/assets/local-11.jpg";
@@ -38,16 +35,13 @@ const WHATSAPP = "https://wa.me/50576514498?text=Hola%20Yasser%2C%20me%20interes
 type GalleryItem = { src: string; label: string; video?: string };
 
 const gallery: GalleryItem[] = [
-  { src: g3, label: "Interior amplio · vista frontal" },
+  { src: g12, label: "Fachada en esquina · vista diurna" },
   { src: recorridoPoster, label: "Recorrido en video", video: recorridoVideo },
   { src: g11, label: "Interior acondicionado · mostrador central" },
-  { src: g7, label: "Interior con acceso a baño" },
-  { src: g6, label: "Vista lateral del módulo" },
   { src: g9, label: "Baño completo con lavandería" },
   { src: g4, label: "Lavamanos del baño" },
   { src: g5, label: "Ventilación natural" },
   { src: g2, label: "Panel eléctrico privado" },
-  { src: g12, label: "Fachada en esquina · vista diurna" },
   { src: g10, label: "Plano del módulo comercial" },
   { src: g1, label: "Fachada exterior nocturna" },
 ];
