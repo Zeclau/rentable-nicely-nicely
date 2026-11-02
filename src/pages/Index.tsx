@@ -499,7 +499,13 @@ const Index = () => {
             <Reveal
               key={i}
               delay={(i % 3) * 0.05}
-              className={i === 0 ? "md:col-span-2 md:row-span-2" : i === gallery.length - 1 ? "col-span-2 md:col-span-1" : ""}
+              className={
+                i === 0
+                  ? "md:col-span-2 md:row-span-2"
+                  : i === gallery.length - 1 && gallery.length % 2 === 1
+                    ? "col-span-2 md:col-span-1"
+                    : ""
+              }
             >
               <motion.button
                 whileHover={{ scale: 1.03 }}
@@ -514,9 +520,16 @@ const Index = () => {
                     i === 0 ? "h-40 md:h-[520px]" : "h-40 md:h-64"
                   }`}
                 />
+                {g.video && (
+                  <span className="absolute inset-0 grid place-items-center pointer-events-none">
+                    <span className="w-12 h-12 rounded-full bg-white/85 grid place-items-center text-primary shadow-lg transition-smooth group-hover:scale-110">
+                      <Play className="w-5 h-5 ml-0.5" fill="currentColor" />
+                    </span>
+                  </span>
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-smooth" />
                 <div className="absolute bottom-0 left-0 right-0 p-4 text-white text-sm font-medium opacity-0 group-hover:opacity-100 transition-smooth">
-                  <Maximize2 className="w-4 h-4 inline mr-2" />
+                  {g.video ? <Play className="w-4 h-4 inline mr-2" /> : <Maximize2 className="w-4 h-4 inline mr-2" />}
                   {g.label}
                 </div>
               </motion.button>
@@ -539,15 +552,30 @@ const Index = () => {
               >
                 <X className="w-6 h-6" />
               </button>
-              <motion.img
-                key={lightbox}
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                src={gallery[lightbox].src}
-                alt={gallery[lightbox].label}
-                className="max-w-full max-h-[85vh] object-contain rounded-xl"
-                onClick={(e) => e.stopPropagation()}
-              />
+              {gallery[lightbox].video ? (
+                <motion.video
+                  key={lightbox}
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  src={gallery[lightbox].video}
+                  poster={gallery[lightbox].src}
+                  controls
+                  autoPlay
+                  playsInline
+                  className="max-w-full max-h-[85vh] rounded-xl bg-black"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              ) : (
+                <motion.img
+                  key={lightbox}
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  src={gallery[lightbox].src}
+                  alt={gallery[lightbox].label}
+                  className="max-w-full max-h-[85vh] object-contain rounded-xl"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              )}
               <p className="absolute bottom-6 left-0 right-0 text-center text-white/90 text-sm">{gallery[lightbox].label}</p>
             </motion.div>
           )}
