@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin, Rocket, Store, ShieldCheck, Zap, Phone, MessageCircle,
-  Maximize2, X, Calendar, Building2, CheckCircle2, ArrowRight, Menu, UserPlus, Briefcase, Check
+  Maximize2, X, Calendar, Building2, CheckCircle2, ArrowRight, Menu, UserPlus, Briefcase, Check, Play
 } from "lucide-react";
 import { z } from "zod";
 
@@ -26,21 +26,28 @@ import g4 from "@/assets/local-4.jpg";
 import g5 from "@/assets/local-5.jpg";
 import g6 from "@/assets/local-6.jpg";
 import g7 from "@/assets/local-7.jpg";
-import g8 from "@/assets/local-8.jpg";
-import g9 from "@/assets/local-9.jpg";
 import g10 from "@/assets/local-10.png";
+import g9 from "@/assets/local-9.jpg";
+import g11 from "@/assets/local-11.jpg";
+import g12 from "@/assets/local-12.jpg";
+import recorridoPoster from "@/assets/recorrido-poster.jpg";
+import recorridoVideo from "@/assets/recorrido-local.mp4";
 
 const WHATSAPP = "https://wa.me/50576514498?text=Hola%20Yasser%2C%20me%20interesa%20el%20m%C3%B3dulo%20comercial%20en%20Praderas%20de%20Sandino%20V%20Etapa.";
 
-const gallery = [
+type GalleryItem = { src: string; label: string; video?: string };
+
+const gallery: GalleryItem[] = [
   { src: g3, label: "Interior amplio · vista frontal" },
+  { src: recorridoPoster, label: "Recorrido en video", video: recorridoVideo },
+  { src: g11, label: "Interior acondicionado · mostrador central" },
   { src: g7, label: "Interior con acceso a baño" },
   { src: g6, label: "Vista lateral del módulo" },
   { src: g9, label: "Baño completo con lavandería" },
   { src: g4, label: "Lavamanos del baño" },
   { src: g5, label: "Ventilación natural" },
   { src: g2, label: "Panel eléctrico privado" },
-  { src: g8, label: "Plano arquitectónico" },
+  { src: g12, label: "Fachada en esquina · vista diurna" },
   { src: g10, label: "Plano del módulo comercial" },
   { src: g1, label: "Fachada exterior nocturna" },
 ];
@@ -492,7 +499,13 @@ const Index = () => {
             <Reveal
               key={i}
               delay={(i % 3) * 0.05}
-              className={i === 0 ? "md:col-span-2 md:row-span-2" : i === gallery.length - 1 ? "col-span-2 md:col-span-1" : ""}
+              className={
+                i === 0
+                  ? "md:col-span-2 md:row-span-2"
+                  : i === gallery.length - 1 && gallery.length % 2 === 1
+                    ? "col-span-2 md:col-span-1"
+                    : ""
+              }
             >
               <motion.button
                 whileHover={{ scale: 1.03 }}
@@ -507,9 +520,16 @@ const Index = () => {
                     i === 0 ? "h-40 md:h-[520px]" : "h-40 md:h-64"
                   }`}
                 />
+                {g.video && (
+                  <span className="absolute inset-0 grid place-items-center pointer-events-none">
+                    <span className="w-12 h-12 rounded-full bg-white/85 grid place-items-center text-primary shadow-lg transition-smooth group-hover:scale-110">
+                      <Play className="w-5 h-5 ml-0.5" fill="currentColor" />
+                    </span>
+                  </span>
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-smooth" />
                 <div className="absolute bottom-0 left-0 right-0 p-4 text-white text-sm font-medium opacity-0 group-hover:opacity-100 transition-smooth">
-                  <Maximize2 className="w-4 h-4 inline mr-2" />
+                  {g.video ? <Play className="w-4 h-4 inline mr-2" /> : <Maximize2 className="w-4 h-4 inline mr-2" />}
                   {g.label}
                 </div>
               </motion.button>
@@ -532,15 +552,30 @@ const Index = () => {
               >
                 <X className="w-6 h-6" />
               </button>
-              <motion.img
-                key={lightbox}
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                src={gallery[lightbox].src}
-                alt={gallery[lightbox].label}
-                className="max-w-full max-h-[85vh] object-contain rounded-xl"
-                onClick={(e) => e.stopPropagation()}
-              />
+              {gallery[lightbox].video ? (
+                <motion.video
+                  key={lightbox}
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  src={gallery[lightbox].video}
+                  poster={gallery[lightbox].src}
+                  controls
+                  autoPlay
+                  playsInline
+                  className="max-w-full max-h-[85vh] rounded-xl bg-black"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              ) : (
+                <motion.img
+                  key={lightbox}
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  src={gallery[lightbox].src}
+                  alt={gallery[lightbox].label}
+                  className="max-w-full max-h-[85vh] object-contain rounded-xl"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              )}
               <p className="absolute bottom-6 left-0 right-0 text-center text-white/90 text-sm">{gallery[lightbox].label}</p>
             </motion.div>
           )}
