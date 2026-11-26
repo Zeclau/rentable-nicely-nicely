@@ -17,34 +17,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-
-import hero from "@/assets/hero-module3-night.jpg";
-import g1 from "@/assets/local-1.jpg";
-import g2 from "@/assets/local-2.jpg";
-import g4 from "@/assets/local-4.jpg";
-import g5 from "@/assets/local-5.jpg";
-import g10 from "@/assets/local-10.png";
-import g9 from "@/assets/local-9.jpg";
-import g11 from "@/assets/local-11.jpg";
-import g12 from "@/assets/local-12.jpg";
-import recorridoPoster from "@/assets/recorrido-poster.jpg";
-import recorridoVideo from "@/assets/recorrido-local.mp4";
-
-const WHATSAPP = "https://wa.me/50576514498?text=Hola%20Yasser%2C%20me%20interesa%20el%20m%C3%B3dulo%20comercial%20en%20Praderas%20de%20Sandino%20V%20Etapa.";
-
-type GalleryItem = { src: string; label: string; video?: string };
-
-const gallery: GalleryItem[] = [
-  { src: g12, label: "Fachada en esquina · vista diurna" },
-  { src: recorridoPoster, label: "Recorrido en video", video: recorridoVideo },
-  { src: g11, label: "Interior acondicionado · mostrador central" },
-  { src: g9, label: "Baño completo con lavandería" },
-  { src: g4, label: "Lavamanos del baño" },
-  { src: g5, label: "Ventilación natural" },
-  { src: g2, label: "Panel eléctrico privado" },
-  { src: g10, label: "Plano del módulo comercial" },
-  { src: g1, label: "Fachada exterior nocturna" },
-];
+import { ModuleSelector } from "@/components/ModuleSelector";
+import { agentWhatsAppUrl, contactWhatsAppUrl, listingMetadata, listingSpecifications, type Listing } from "@/data/listings";
 
 const navLinks = [
   { href: "#ventajas", label: "Ventajas" },
@@ -83,7 +57,8 @@ function Reveal({ children, delay = 0, className = "" }: { children: React.React
   );
 }
 
-const Index = () => {
+const Index = ({ listing }: { listing: Listing }) => {
+  const gallery = listing.gallery;
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [lightbox, setLightbox] = useState<number | null>(null);
@@ -91,6 +66,30 @@ const Index = () => {
   const [agentErrors, setAgentErrors] = useState<Record<string, string>>({});
   const formRef = useRef<HTMLFormElement>(null);
   const agentFormRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const metadata = listingMetadata(listing);
+    document.title = metadata.title;
+    const tags = [
+      ["name", "description", metadata.description],
+      ["property", "og:title", metadata.title],
+      ["property", "og:description", metadata.description],
+      ["property", "og:type", "website"],
+      ["name", "twitter:title", metadata.title],
+      ["name", "twitter:description", metadata.description],
+      ["name", "twitter:card", "summary_large_image"],
+    ];
+    tags.forEach(([attribute, name, content]) => {
+      let tag = document.head.querySelector<HTMLMetaElement>(`meta[${attribute}="${name}"]`);
+      if (!tag) {
+        tag = document.createElement("meta");
+        tag.setAttribute(attribute, name);
+        document.head.appendChild(tag);
+      }
+      tag.content = content;
+    });
+  }, [listing]);
 
   useEffect(() => {
     let mounted = true;
@@ -130,8 +129,7 @@ const Index = () => {
     const tel = fd.get("telefono") as string;
     const tipo = fd.get("tipo") as string;
     const msg = fd.get("mensaje") as string;
-    const text = `Hola Yasser, soy ${nombre}. Tel: ${tel}. Negocio: ${tipo}. ${msg}`;
-    window.open(`https://wa.me/50576514498?text=${encodeURIComponent(text)}`, "_blank");
+    window.open(contactWhatsAppUrl(listing, { name: nombre, phone: tel, business: tipo, message: msg }), "_blank", "noopener,noreferrer");
     toast.success("¡Mensaje enviado! Te redirigimos a WhatsApp.");
     formRef.current?.reset();
   };
@@ -194,13 +192,13 @@ const Index = () => {
         }`}
       >
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="#inicio" className="flex items-center gap-2 font-bold">
+          <a href="#inicio" className="flex min-w-0 items-center gap-2 font-bold">
             <span className={`w-9 h-9 rounded-lg gradient-accent grid place-items-center text-accent-foreground`}>
               <Building2 className="w-5 h-5" />
             </span>
-            <span className={scrolled ? "text-primary" : "text-white drop-shadow"}>Módulo 3 · La Esquina</span>
+            <span className={scrolled ? "text-primary" : "text-white drop-shadow"}>{listing.name}</span>
           </a>
-          <nav className="hidden md:flex items-center gap-7">
+          <nav className="hidden xl:flex items-center gap-4">
             {navLinks.map(l => (
               <a
                 key={l.href}
@@ -214,17 +212,25 @@ const Index = () => {
             ))}
           </nav>
           <div className="flex items-center gap-3">
+            <ModuleSelector activeId={listing.id} className="hidden md:flex" />
             <Button asChild size="sm" className="hidden md:inline-flex bg-accent hover:bg-accent/90 text-accent-foreground hover:scale-105 transition-smooth">
               <a href="#contacto">Agendar Visita</a>
             </Button>
-            <button
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
               onClick={() => setMenuOpen(v => !v)}
-              className={`md:hidden p-2 rounded-lg ${scrolled ? "text-foreground" : "text-white"}`}
+              className={`xl:hidden shrink-0 ${scrolled ? "text-foreground" : "text-primary-foreground"}`}
               aria-label="Menú"
+              aria-expanded={menuOpen}
             >
               <Menu className="w-6 h-6" />
-            </button>
+            </Button>
           </div>
+        </div>
+        <div className="px-6 pb-2 md:hidden">
+          <ModuleSelector activeId={listing.id} className="flex" />
         </div>
         <AnimatePresence>
           {menuOpen && (
@@ -232,7 +238,7 @@ const Index = () => {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="md:hidden bg-background/95 backdrop-blur-lg border-t border-border overflow-hidden"
+              className="xl:hidden bg-background/95 backdrop-blur-lg border-t border-border overflow-hidden"
             >
               <div className="px-6 py-4 flex flex-col gap-3">
                 {navLinks.map(l => (
@@ -250,10 +256,10 @@ const Index = () => {
       </header>
 
       {/* Hero */}
-      <section id="inicio" className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
+      <section id="inicio" className="relative min-h-[100svh] flex items-center justify-center overflow-hidden pt-40 pb-16 md:pt-28">
         <img
-          src={hero}
-          alt="Módulo comercial de esquina en Praderas de Sandino V Etapa, iluminado de noche"
+          src={listing.hero}
+          alt={listing.heroAlt}
           className="absolute inset-0 w-full h-full object-cover"
           width={1900}
           height={1180}
@@ -269,7 +275,7 @@ const Index = () => {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/20 mb-6 text-sm"
           >
             <span className="w-2 h-2 rounded-full bg-[hsl(var(--emerald))] animate-pulse" />
-             
+            {listing.id === 1 ? "Módulo 1 · Disponible para alquiler" : listing.name}
           </motion.div>
 
           <motion.h1
@@ -287,8 +293,7 @@ const Index = () => {
             transition={{ duration: 0.7, delay: 0.25 }}
             className="text-lg md:text-xl text-white/85 max-w-2xl mx-auto mb-10"
           >
-            Módulo comercial de esquina con alto tráfico garantizado. Ubicado en
-            Praderas de Sandino V Etapa, contiguo a un Super Express y rodeado de comercios consolidados.
+            {listing.introduction}
           </motion.p>
 
           <motion.div
@@ -309,8 +314,8 @@ const Index = () => {
             className="mt-16 grid grid-cols-3 gap-6 max-w-2xl mx-auto"
           >
             {[
-              { v: "21.5", l: "m² útiles" },
-              { v: "U$270", l: "Mensual" },
+              { v: String(listing.area), l: "m² útiles" },
+              { v: `U$${listing.monthlyUsd}`, l: "Mensual" },
               { v: "100%", l: "Independiente" },
             ].map((s, i) => (
               <div key={i} className="text-center">
@@ -336,8 +341,8 @@ const Index = () => {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { icon: Rocket, title: "Ubicación Estratégica", desc: "Alto tráfico de vehículos y peatones todo el día, con visibilidad desde la esquina. Contiguo a un Super Express con flujo constante de clientes." },
-            { icon: Store, title: "Entorno Sinérgico", desc: "Flanqueado por negocios ancla: local de comida rápida y batidos y waffles que atraen tu público objetivo." },
+            { icon: Rocket, title: "Ubicación Estratégica", desc: listing.locationBenefit },
+            { icon: Store, title: "Entorno Sinérgico", desc: listing.neighboringBusinesses },
             { icon: ShieldCheck, title: "Máxima Seguridad", desc: "Residencial seguro y de confianza. Iluminación nocturna y comunidad activa que protege tu inversión." },
             { icon: Zap, title: "Independencia Total", desc: "Medidores privados de agua y energía. Tú controlas tus consumos sin sorpresas en tus facturas." },
           ].map((c, i) => (
@@ -368,18 +373,10 @@ const Index = () => {
             </p>
 
             <div className="space-y-4">
-              {[
-                ["Módulo", "Número TRES (3)"],
-                ["Posición", "Local de esquina"],
-                ["Área aproximada", "21.50 m²"],
-                ["Ancho", "4.94 m"],
-                ["Fondo", "4.50 m"],
-                ["Altura interior", "2.92 m"],
-                ["Disponibilidad", "9 de diciembre"],
-              ].map(([k, v]) => (
+              {listingSpecifications(listing).map(([k, v]) => (
                 <div key={k} className="flex items-center justify-between border-b border-border pb-3">
                   <span className="text-muted-foreground">{k}</span>
-                  <span className="font-semibold text-primary">{v}</span>
+                  <span className="font-semibold text-primary text-right">{v}</span>
                 </div>
               ))}
             </div>
@@ -401,13 +398,13 @@ const Index = () => {
           <Reveal delay={0.2}>
             <div className="relative">
               <motion.div whileHover={{ scale: 1.02 }} className="rounded-3xl overflow-hidden shadow-card">
-                <img src={hero} alt="Módulo comercial de esquina en Praderas de Sandino V Etapa, iluminado de noche" className="w-full h-[480px] object-cover" loading="lazy" />
+                <img src={listing.detailsImage} alt={listing.detailsImageAlt} className="w-full h-[480px] object-cover" loading="lazy" />
               </motion.div>
               <div className="absolute -bottom-6 -left-6 bg-card rounded-2xl p-5 shadow-card border border-border hidden md:block">
                 <div className="flex items-center gap-3">
                   <Maximize2 className="w-8 h-8 text-accent" />
                   <div>
-                    <div className="text-2xl font-bold text-primary">21.5 m²</div>
+                    <div className="text-2xl font-bold text-primary">{listing.area} m²</div>
                     <div className="text-xs text-muted-foreground">Espacio diáfano</div>
                   </div>
                 </div>
@@ -433,10 +430,10 @@ const Index = () => {
               <div className="bg-white/5 backdrop-blur border border-white/10 rounded-3xl p-8 hover:bg-white/10 transition-smooth h-full">
                 <p className="text-white/60 text-sm uppercase tracking-wider mb-2">Canon mensual</p>
                 <div className="flex items-baseline gap-3 mb-3">
-                  <span className="text-5xl md:text-6xl font-extrabold text-[hsl(var(--emerald-glow))]">U$ 270</span>
+                  <span className="text-5xl md:text-6xl font-extrabold text-[hsl(var(--emerald-glow))]">U$ {listing.monthlyUsd}</span>
                   <span className="text-white/70">/ mes</span>
                 </div>
-                <p className="text-white/70">Equivalente a <span className="font-semibold text-white">C$ 10,000.00</span> mensuales.</p>
+                <p className="text-white/70">Equivalente a <span className="font-semibold text-white">C$ {listing.monthlyNio.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span> mensuales.</p>
                 <div className="mt-6 pt-6 border-t border-white/10">
                   <p className="text-sm text-white/60 mb-2">Requisitos al firmar</p>
                   <p className="font-semibold">1 mes de anticipo + 1 mes de depósito en garantía</p>
@@ -483,7 +480,7 @@ const Index = () => {
             <span className="text-accent font-semibold uppercase text-sm tracking-widest">Galería</span>
             <h2 className="text-3xl md:text-5xl font-bold mt-3 text-primary">Conoce el espacio por dentro</h2>
             <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
-              Actualmente acondicionado como carnicería, ideal para adaptarse a tu visión: cafetería, oficina, boutique, consultorio o tienda.
+              {listing.galleryDescription}
             </p>
           </div>
         </Reveal>
@@ -502,6 +499,7 @@ const Index = () => {
               }
             >
               <motion.button
+                aria-label={`Abrir ${g.label}`}
                 whileHover={{ scale: 1.03 }}
                 onClick={() => setLightbox(i)}
                 className="relative w-full overflow-hidden rounded-2xl group block h-full"
@@ -541,6 +539,7 @@ const Index = () => {
               className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm grid place-items-center p-4"
             >
               <button
+                aria-label="Cerrar galería"
                 onClick={() => setLightbox(null)}
                 className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 grid place-items-center text-white transition-smooth"
               >
@@ -676,7 +675,7 @@ const Index = () => {
                               <Phone className="w-4 h-4" /> <span className="hidden sm:inline">{a.phone}</span>
                             </a>
                             <a
-                              href={`https://wa.me/${a.phone.replace(/[^\d]/g, "")}?text=${encodeURIComponent(`Hola ${a.name}, te contacto por el módulo comercial en Praderas de Sandino V Etapa. Me interesa más información.`)}`}
+                              href={agentWhatsAppUrl(listing, a)}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="inline-flex items-center gap-1.5 text-xs font-semibold bg-accent text-accent-foreground px-3 py-2 rounded-lg hover:scale-105 transition-smooth"
@@ -740,7 +739,7 @@ const Index = () => {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
           <div className="flex items-center gap-2 font-semibold">
             <Building2 className="w-5 h-5 text-[hsl(var(--emerald-glow))]" />
-            Módulo 3
+            {listing.name}
           </div>
           <div className="text-white/60">© {new Date().getFullYear()} Yasser Santana Cruz · Asistente administrativo · +505 7651 4498</div>
         </div>
