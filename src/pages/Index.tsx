@@ -36,7 +36,7 @@ const fadeUp = {
 
 function Section({ id, className = "", children }: { id?: string; className?: string; children: React.ReactNode }) {
   return (
-    <section id={id} className={`py-20 md:py-28 px-6 ${className}`}>
+    <section id={id} className={`scroll-mt-32 md:scroll-mt-20 py-20 md:py-28 px-6 ${className}`}>
       <div className="max-w-6xl mx-auto">{children}</div>
     </section>
   );
@@ -45,7 +45,7 @@ function Section({ id, className = "", children }: { id?: string; className?: st
 function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
   return (
     <motion.div
-      className={className}
+      className={`min-w-0 ${className}`}
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, margin: "-80px" }}
@@ -256,7 +256,7 @@ const Index = ({ listing }: { listing: Listing }) => {
       </header>
 
       {/* Hero */}
-      <section id="inicio" className="relative min-h-[100svh] flex items-center justify-center overflow-hidden pt-40 pb-16 md:pt-28">
+      <section id="inicio" className="relative min-h-[min(54rem,calc(100svh-3rem))] flex items-center justify-center overflow-hidden pt-40 pb-16 md:pt-28">
         <img
           src={listing.hero}
           alt={listing.heroAlt}
